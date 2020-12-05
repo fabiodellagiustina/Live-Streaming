@@ -42,13 +42,19 @@
 // in the presented order. The first working server will be used for
 // the whole session.
 //
-var server = "wss://" + window.location.hostname + "/ws";
+var server = null;
+if(window.location.protocol === 'http:')
+	server = "http://" + window.location.hostname + ":8088/janus";
+else
+	server = "https://" + window.location.hostname + ":8089/janus";
 
 var janus = null;
 var sfutest = null;
 var opaqueId = "videoroomtest-"+Janus.randomString(12);
 
 var myroom = 1234;	// Demo room
+if(getQueryStringValue("room") !== "")
+	myroom = parseInt(getQueryStringValue("room"));
 var myusername = null;
 var myid = null;
 var mystream = null;
@@ -160,12 +166,11 @@ $(document).ready(function() {
 											mypvtid = msg["private_id"];
 											Janus.log("Successfully joined room " + msg["room"] + " with ID " + myid);
 											if(subscriber_mode) {
-                                                						$('#videojoin').hide();
-                                                						$('#videos').removeClass('hide').show();
-                                            						} else {
-                                                						publishOwnFeed(true);
+												$('#videojoin').hide();
+												$('#videos').removeClass('hide').show();
+											} else {
+												publishOwnFeed(true);
 											}
-
 											// Any new feed to attach to?
 											if(msg["publishers"]) {
 												var list = msg["publishers"];
@@ -520,7 +525,7 @@ function newRemoteFeed(id, display, audio, video) {
 						Janus.log("Successfully attached to feed " + remoteFeed.rfid + " (" + remoteFeed.rfdisplay + ") in room " + msg["room"]);
 						$('#remote'+remoteFeed.rfindex).removeClass('hide').html(remoteFeed.rfdisplay).show();
 					} else if(event === "event") {
-						// Check if we got an event on a simulcast-related event from this publisher
+						// Check if we got a simulcast-related event from this publisher
 						var substream = msg["substream"];
 						var temporal = msg["temporal"];
 						if((substream !== null && substream !== undefined) || (temporal !== null && temporal !== undefined)) {
