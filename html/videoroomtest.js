@@ -170,6 +170,7 @@ $(document).ready(function() {
 												$('#videos').removeClass('hide').show();
 											} else {
 												publishOwnFeed(true);
+												publishRTPForward(msg);
 											}
 											// Any new feed to attach to?
 											if(msg["publishers"]) {
@@ -441,6 +442,36 @@ function publishOwnFeed(useAudio) {
 		});
 }
 
+function publishRTPForward(msg) {
+	var room_id = msg["room"];
+	var pub_id = msg["id"];
+	var req = {
+        "request" : "rtp_forward",
+        "room" : room_id,
+        "publisher_id" : pub_id,
+        "host" : 127.0.0.1,
+        //"host_family" : "<ipv4|ipv6, if we need to resolve the host address to an IP; by default, whatever we get>",
+        "audio_port" : 5008,
+        //"audio_ssrc" : <audio SSRC to use to use when streaming; optional>,
+        "audio_pt" : 111,
+        //"audio_rtcp_port" : <port to contact to receive audio RTCP feedback from the recipient; optional, and currently unused for audio>,
+        "video_port" : 5007,
+        //"video_ssrc" : <video SSRC to use to use when streaming; optional>,
+        "video_pt" : 100,
+        //"video_rtcp_port" : <port to contact to receive video RTCP feedback from the recipient; optional>,
+        //"simulcast" : <true|false, set to true if the source is simulcast and you want the forwarder to act as a regular viewer (single stream being forwarded) or false otherwise (substreams forwarded separately); optional, default=false>,
+        //"video_port_2" : <if simulcasting and forwarding each substream, port to forward the video RTP packets from the second substream/layer to>,
+        //"video_ssrc_2" : <if simulcasting and forwarding each substream, video SSRC to use to use the second substream/layer; optional>,
+        //"video_pt_2" : <if simulcasting and forwarding each substream, video payload type to use the second substream/layer; optional>,
+        //"video_port_3" : <if simulcasting and forwarding each substream, port to forward the video RTP packets from the third substream/layer to>,
+        //"video_ssrc_3" : <if simulcasting and forwarding each substream, video SSRC to use to use the third substream/layer; optional>,
+        //"video_pt_3" : <if simulcasting and forwarding each substream, video payload type to use the third substream/layer; optional>,
+        //"data_port" : <port to forward the datachannel messages to>,
+        //"srtp_suite" : <length of authentication tag (32 or 80); optional>,
+        //"srtp_crypto" : "<key to use as crypto (base64 encoded key as in SDES); optional>"
+			}
+}
+
 function toggleMute() {
 	var muted = sfutest.isAudioMuted();
 	Janus.log((muted ? "Unmuting" : "Muting") + " local stream...");
@@ -457,6 +488,10 @@ function unpublishOwnFeed() {
 	$('#unpublish').attr('disabled', true).unbind('click');
 	var unpublish = { request: "unpublish" };
 	sfutest.send({ message: unpublish });
+}
+
+function unpublishRTPForward() {
+
 }
 
 function newRemoteFeed(id, display, audio, video) {
