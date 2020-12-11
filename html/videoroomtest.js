@@ -461,9 +461,9 @@ function publishRTPForward(msg) {
 		"publisher_id" : msg["id"],
 		"host" : "hls.fabiodellagiustina.it",
 		"host_family" : "ipv4",
-		"audio_port" : 1935,
+		"audio_port" : 5002,
 		"audio_pt" : 111,
-		"video_port" : 1935,
+		"video_port" : 5004,
 		"video_pt" : 100
 	}
 	sfutest.send({ message: rtp_to_streaming });
