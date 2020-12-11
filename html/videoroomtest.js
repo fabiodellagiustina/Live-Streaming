@@ -444,6 +444,7 @@ function publishOwnFeed(useAudio) {
 function publishRTPForward(msg) {
 	var rtp_forward_req = {
 		"request" : "rtp_forward",
+		"secret" : "adminpwd",
 		"room" : 7,
 		"publisher_id" : msg["id"],
 		"host" : "webrtc.fabiodellagiustina.it",
