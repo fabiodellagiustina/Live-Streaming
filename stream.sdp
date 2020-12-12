@@ -18,7 +18,7 @@ t=0 0
 # * The RTCP port is 5005 (implicitly by using RTP+1)
 # * Adheres to the "RTP Profile for Audio and Video" (RTP/AVP)
 # * Payload Type can be 100
-m=video 5004 RTP 100
+m=video 5004 RTP/AVP 100
 
 # Payload Type 100 encoding corresponds to VP8 codec
 a=rtpmap:100 VP8/90000
