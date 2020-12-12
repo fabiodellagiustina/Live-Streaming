@@ -13,12 +13,8 @@ c=IN IP4 82.130.9.103
 # NTP timestamps for start and end of the session; can be 0
 t=0 0
 
-# First media: a video stream with these parameters:
-# * The RTP port is 5004
-# * The RTCP port is 5005 (implicitly by using RTP+1)
-# * Adheres to the "RTP Profile for Audio and Video" (RTP/AVP)
-# * Payload Type can be 100
-m=video 5004 RTP/AVP 100
+m=audio 5002 RTP/AVP 111
+a=rtpmap:111 opus/48000/2
 
-# Payload Type 100 encoding corresponds to VP8 codec
+m=video 5004 RTP/AVP 100
 a=rtpmap:100 VP8/90000
